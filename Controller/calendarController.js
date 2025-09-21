@@ -1,37 +1,48 @@
-const { getTokens } = require("../Utils/tokenStore.js");
+const User = require("../Model/User");
 const { oauth2Client } = require("../Config/googleClient.js");
-const { createEvent } = require("../Services/calendarService.js");
+const { google } = require("googleapis");
 
 const addEvent = async (req, res) => {
   try {
-    oauth2Client.setCredentials(getTokens("me"));
+    const { title, date, time, participants, location } = req.body;
 
-    const { title, date, time, participants } = req.body;
+    const user = await User.findOne();
+    if (!user || !user.refreshToken) { 
+      return res.status(401).json({ error: "No user with valid tokens found. Please re-authenticate." });
+    }
 
-    const startTime = new Date(`${date}T${time}:00`);
-    const endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
+    oauth2Client.setCredentials({
+      access_token: user.accessToken,
+      refresh_token: user.refreshToken,
+    });
 
-    const attendees = participants ? participants.map(email => ({ email: email })) : [];
+    const calendar = google.calendar({ version: "v3", auth: oauth2Client });
+    const startDateTime = new Date(`${date}T${time}:00`);
+    const endDateTime = new Date(startDateTime.getTime() + 60 * 60 * 1000);
+    const attendees = participants ? participants.map(email => ({ email })) : [];
 
-    const eventDetails = {
+    const event = {
       summary: title,
+      location,
       start: {
-        dateTime: startTime.toISOString(),
-        timeZone: "Asia/Kolkata",
+        dateTime: startDateTime.toISOString(),
+        timeZone: "Asia/Kolkata", 
       },
       end: {
-        dateTime: endTime.toISOString(),
+        dateTime: endDateTime.toISOString(),
         timeZone: "Asia/Kolkata",
       },
       attendees: attendees,
     };
+    const response = await calendar.events.insert({
+      calendarId: "primary",
+      resource: event,
+    });
 
-    const event = await createEvent(oauth2Client, eventDetails);
-    res.json(event);
-    
+    res.json({ status: "Event created", eventId: response.data.id });
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Failed to create calendar event");
+    console.error("❌ Calendar addEvent error:", err.response?.data?.error || err.message);
+    res.status(500).send("Failed to create event");
   }
 };
 

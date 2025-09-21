@@ -1,5 +1,6 @@
 const express = require("express");
 const dotenv = require("dotenv");
+const connectDB = require("./Config/db");
 
 const authRoutes = require("./Routes/authRoutes");
 const gmailRoutes = require("./Routes/gmailRoutes");
@@ -8,6 +9,8 @@ const aiRoutes = require("./Routes/aiRoutes");
 
 dotenv.config();
 const app = express();
+app.use(express.json());
+connectDB();
 
 app.get('/',(req,res)=>{
     res.json("hey")

@@ -43,7 +43,7 @@ Follow these steps to set up and run the project locally.
 
 1.  **Clone the repository:**
     ```bash
-    git clone (https://github.com/Tanush223/Email_Workflow/)
+    git clone https://github.com/Tanush223/Email_Workflow/
     cd Email_Workflow
     ```
 

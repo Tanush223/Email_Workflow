@@ -43,8 +43,8 @@ Follow these steps to set up and run the project locally.
 
 1.  **Clone the repository:**
     ```bash
-    git clone <your-repository-url>
-    cd <your-repository-directory>
+    git clone https://github.com/Tanush223/Email_Workflow/
+    cd Email_Workflow
     ```
 
 2.  **Install dependencies:**

@@ -1,5 +1,5 @@
 const User = require("../Model/User");
-const { oauth2Client } = require("../Config/googleClient.js");
+const { createOAuth2Client } = require("../Config/googleClient.js");
 const { google } = require("googleapis");
 
 const addEvent = async (req, res) => {
@@ -7,10 +7,11 @@ const addEvent = async (req, res) => {
     const { title, date, time, participants, location } = req.body;
 
     const user = await User.findOne();
-    if (!user || !user.refreshToken) { 
+    if (!user || !user.refreshToken) {
       return res.status(401).json({ error: "No user with valid tokens found. Please re-authenticate." });
     }
 
+    const oauth2Client = createOAuth2Client();
     oauth2Client.setCredentials({
       access_token: user.accessToken,
       refresh_token: user.refreshToken,
@@ -26,7 +27,7 @@ const addEvent = async (req, res) => {
       location,
       start: {
         dateTime: startDateTime.toISOString(),
-        timeZone: "Asia/Kolkata", 
+        timeZone: "Asia/Kolkata",
       },
       end: {
         dateTime: endDateTime.toISOString(),

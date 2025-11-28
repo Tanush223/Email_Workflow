@@ -12,6 +12,13 @@ const app = express();
 app.use(express.json());
 connectDB();
 
+const cors = require("cors");
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true, 
+}));
+
 app.get('/',(req,res)=>{
     res.json("hey")
 })

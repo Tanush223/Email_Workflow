@@ -101,7 +101,7 @@ Here are the available endpoints. All requests should be sent to `http://localho
       }
     ]
     ```
-    [Screenshot of Postman request for listing messages]
+
 
 #### 2. Send Email
 
@@ -119,7 +119,7 @@ Here are the available endpoints. All requests should be sent to `http://localho
     ```
     "Email sent successfully!"
     ```
-    [Screenshot of Postman request for sending an email]
+   
 
 ---
 
@@ -139,7 +139,7 @@ Here are the available endpoints. All requests should be sent to `http://localho
     }
     ```
 * **Success Response:** A JSON object representing the created calendar event.
-    [Screenshot of Postman request for adding a calendar event]
+   
 
 ---
 
@@ -161,7 +161,7 @@ Here are the available endpoints. All requests should be sent to `http://localho
       "suggestions": "1. Yes, 10 AM tomorrow works for me. Looking forward to it.\n2. I'm available then. I'll send a calendar invite shortly.\n3. I have a conflict at that time. Would 11 AM work instead?"
     }
     ```
-    [Screenshot of Postman request for AI reply suggestions]
+   
 
 #### 2. Extract Event from Email
 
@@ -184,4 +184,4 @@ Here are the available endpoints. All requests should be sent to `http://localho
       }
     }
     ```
-    [Screenshot of Postman request for AI event extraction]
+ 
